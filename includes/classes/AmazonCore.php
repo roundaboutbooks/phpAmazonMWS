@@ -634,6 +634,13 @@ abstract class AmazonCore{
     protected function sendRequest($url,$param){
         $this->log("Making request to Amazon: ".$this->options['Action']);
         $response = $this->fetchURL($url,$param);
+	    
+	if ( ! isset($response['head'])){
+	    // we dont know what went wrong
+            $this->rawResponses[] = $response;
+            return $response;
+	}
+	    
         $this->headers = $response['head'];
 
         if ($response['ok']) {
